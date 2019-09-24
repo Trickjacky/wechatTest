@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wechat.demo.mapper.WxUserMapper">
+  <resultMap id="BaseResultMap" type="com.wechat.demo.domain.WxUser">
+    <!--@mbg.generated generated on Tue Sep 24 11:52:43 CST 2019.-->
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="openid" jdbcType="VARCHAR" property="openid" />
+    <result column="subscribe" jdbcType="INTEGER" property="subscribe" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="sex" jdbcType="INTEGER" property="sex" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="country" jdbcType="VARCHAR" property="country" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="language" jdbcType="VARCHAR" property="language" />
+    <result column="headimgurl" jdbcType="VARCHAR" property="headimgurl" />
+    <result column="subscribeTime" jdbcType="TIMESTAMP" property="subscribetime" />
+    <result column="unionid" jdbcType="VARCHAR" property="unionid" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="groupid" jdbcType="VARCHAR" property="groupid" />
+    <result column="grading" jdbcType="INTEGER" property="grading" />
+    <result column="balance" jdbcType="INTEGER" property="balance" />
+    <result column="integral_num" jdbcType="INTEGER" property="integralNum" />
+    <result column="valid_time" jdbcType="TIMESTAMP" property="validTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Tue Sep 24 11:52:43 CST 2019.-->
+    user_id, openid, subscribe, nickname, sex, city, country, province, `language`, headimgurl, 
+    subscribeTime, unionid, remark, groupid, grading, balance, integral_num, valid_time
+  </sql>
+</mapper>

@@ -1,8 +1,8 @@
 package com.wechat.demo.controller;
 
-import com.wechat.demo.commons.CheckWechatInfo;
-import com.wechat.demo.commons.Constant;
-import com.wechat.demo.commons.HttpClientUtil;
+import com.wechat.demo.commons.*;
+import com.wechat.demo.domain.WxUser;
+import com.wechat.demo.service.WxUserService;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import org.json.JSONObject;
@@ -10,10 +10,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class TestController {
+
+    @Resource(name = "wxUserServiceImpl")
+    WxUserService wxUserService;
+
+    WxUser wxUser;
+
+    String xml="";
+
+    MessageController messageController=new MessageController();
     /**
      * 完成项目与微信公众号的一次握手
      *
@@ -49,24 +59,33 @@ public class TestController {
             System.out.println("CreateTime=" + createTime);
             System.out.println("MsgType=" + msgType);
 
-
-            if (msgType.equals("event")) {
+            String event = root.getChildText("Event");
+            xml= messageController.msgType(msgType,event,fromUserName,toUserName);
+            /*if (msgType.equals("event")) {
                 //进入事件类型消息
                 System.out.println("进入事件类型消息");
                 //事件类型，subscribe(订阅)、unsubscribe(取消订阅)
                 String event = root.getChildText("Event");
                 if (event.equals("subscribe")) {
                     System.out.println("进入关注事件");
-                    /**
+                    *//**
                      * 获取用户信息并传入数据库
-                     */
+                     *//*
                     //根据获取到的openid去查询用户基本信息
                     String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" + Constant.getAccess_token() + "&openid=" + fromUserName + "&lang=zh_CN";
                     JSONObject jsonObject = HttpClientUtil.doGet(url);
                     System.out.println(jsonObject.toString());
+                    wxUser = JsonUtil.fromJson(jsonObject.toString(), WxUser.class);
+                    wxUserService.selectWxUser(wxUser);
 
                 } else if (event.equals("unsubscribe")) {
                     System.out.println("进入取消关注事件");
+                    //根据获取到的openid去查询用户基本信息
+                    String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" + Constant.getAccess_token() + "&openid=" + fromUserName + "&lang=zh_CN";
+                    JSONObject jsonObject = HttpClientUtil.doGet(url);
+                    System.out.println(jsonObject.toString());
+                    wxUser = JsonUtil.fromJson(jsonObject.toString(), WxUser.class);
+                    wxUserService.updateWxUserSub(wxUser, 0);
                 }
 
             } else if (msgType.equals("text")) {
@@ -84,11 +103,11 @@ public class TestController {
             } else if (msgType.equals("shortvideo")) {
                 //进入小视频消息
                 System.out.println("进入小视频消息");
-            }
+            }*/
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return null;
+        return xml;
     }
 }

@@ -1,6 +1,13 @@
 package com.wechat.demo.service;
 
-public interface WxUserService{
+import com.wechat.demo.domain.WxUser;
 
+public interface WxUserService {
+
+    boolean selectWxUser(WxUser wxUser);
+
+    int insertWxUser(WxUser wxUser);
+
+    int updateWxUserSub(WxUser wxUser, Integer status);
 
 }

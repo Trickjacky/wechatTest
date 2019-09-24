@@ -12,7 +12,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-
+/**
+ * 创建客户端公用类
+ */
 public class HttpClientUtil {
     //doGet请求
     public static JSONObject doGet(String url) {

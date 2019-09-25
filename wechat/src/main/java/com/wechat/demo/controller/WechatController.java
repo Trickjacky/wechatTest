@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 @RestController
 public class WechatController {
@@ -68,5 +69,11 @@ public class WechatController {
         JSONObject jsonObject1 = HttpClientUtil.doGet(url1);
         System.out.println(jsonObject1);
         return "";
+    }
+
+    @RequestMapping(value = "config", method = RequestMethod.POST)
+    public Map<String, String> config(String tagetUrl, HttpSession session) {
+        Map<String, String> map = Constant.getConfig(tagetUrl);
+        return map;
     }
 }

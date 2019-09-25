@@ -2,6 +2,10 @@ package com.wechat.demo.commons;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * 获取ACCESS_TOKEN并验证存在时间是否过期
  */
@@ -45,5 +49,24 @@ public class Constant {
             }
         }
         return JSAPI_TICKET;
+    }
+
+    public static Map<String, String> getConfig(String url) {
+
+        String jsapi_ticket = getJSAPI_ticket();
+        //noncestr随机字符串
+        String noncestr = UUID.randomUUID().toString().replaceAll("-", "");
+        long timestamp = System.currentTimeMillis() / 1000;
+        String str = "jsapi_ticket=" + jsapi_ticket + "&noncestr=" + noncestr + "&timestamp=" + timestamp + "&url=" + url;
+        System.out.println(str);
+        String signature = CheckWechatInfo.getSha1(str);
+        System.out.println(signature);
+        //将script中需要的数据存入map
+        Map<String, String> map = new HashMap<>();
+        map.put("appId", APPID);
+        map.put("timestamp", String.valueOf(timestamp));
+        map.put("nonceStr", noncestr);
+        map.put("signature", signature);
+        return map;
     }
 }

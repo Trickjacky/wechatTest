@@ -6,9 +6,8 @@ import javax.persistence.*;
 @Table(name = "wx_user")
 public class WxUser {
     @Id
-    @Column(name = "user_id")
-    @GeneratedValue(generator = "JDBC")
-    private Integer userId;
+    @Column(name = "id")
+    private Integer id;
 
     /**
      * 用户openid，当前公众号用户唯一标识
@@ -89,41 +88,17 @@ public class WxUser {
     private String groupid;
 
     /**
-     * 会员等级
+     * @return id
      */
-    @Column(name = "grading")
-    private Integer grading;
-
-    /**
-     * 余额
-     */
-    @Column(name = "balance")
-    private Integer balance;
-
-    /**
-     * 积分
-     */
-    @Column(name = "integral_num")
-    private Integer integralNum;
-
-    /**
-     * 积分有效期
-     */
-    @Column(name = "valid_time")
-    private Date validTime;
-
-    /**
-     * @return user_id
-     */
-    public Integer getUserId() {
-        return userId;
+    public Integer getId() {
+        return id;
     }
 
     /**
-     * @param userId
+     * @param id
      */
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     /**
@@ -358,77 +333,5 @@ public class WxUser {
      */
     public void setGroupid(String groupid) {
         this.groupid = groupid;
-    }
-
-    /**
-     * 获取会员等级
-     *
-     * @return grading - 会员等级
-     */
-    public Integer getGrading() {
-        return grading;
-    }
-
-    /**
-     * 设置会员等级
-     *
-     * @param grading 会员等级
-     */
-    public void setGrading(Integer grading) {
-        this.grading = grading;
-    }
-
-    /**
-     * 获取余额
-     *
-     * @return balance - 余额
-     */
-    public Integer getBalance() {
-        return balance;
-    }
-
-    /**
-     * 设置余额
-     *
-     * @param balance 余额
-     */
-    public void setBalance(Integer balance) {
-        this.balance = balance;
-    }
-
-    /**
-     * 获取积分
-     *
-     * @return integral_num - 积分
-     */
-    public Integer getIntegralNum() {
-        return integralNum;
-    }
-
-    /**
-     * 设置积分
-     *
-     * @param integralNum 积分
-     */
-    public void setIntegralNum(Integer integralNum) {
-        this.integralNum = integralNum;
-    }
-
-    /**
-     * 获取积分有效期
-     *
-     * @return valid_time - 积分有效期
-     */
-    public Date getValidTime() {
-        return validTime;
-    }
-
-    /**
-     * 设置积分有效期
-     *
-     * @param validTime 积分有效期
-     */
-    public void setValidTime(Date validTime) {
-        this.validTime = validTime;
     }
 }

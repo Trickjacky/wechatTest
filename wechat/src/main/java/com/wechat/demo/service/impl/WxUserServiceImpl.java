@@ -13,6 +13,7 @@ public class WxUserServiceImpl implements WxUserService {
     @Resource
     private WxUserMapper wxUserMapper;
 
+
     /**
      * 判断数据库中是否已存在
      *
@@ -23,13 +24,13 @@ public class WxUserServiceImpl implements WxUserService {
     public boolean selectWxUser(WxUser wxUser) {
         WxUser wxUser2 = new WxUser();
         wxUser2.setOpenid(wxUser.getOpenid());
-        WxUser wxUser1=wxUserMapper.selectOne(wxUser2);
-        if ( wxUser1== null) {
+        WxUser wxUser1 = wxUserMapper.selectOne(wxUser2);
+        if (wxUser1 == null) {
             //数据库中为空，增加
             return insertWxUser(wxUser) > 0;
         } else {
             //数据库中有数据，替换掉更新数据
-            wxUser.setUserId(wxUser1.getUserId());
+            wxUser.setId(wxUser1.getId());
             return wxUserMapper.updateByPrimaryKeySelective(wxUser) > 0;
         }
 
@@ -44,4 +45,5 @@ public class WxUserServiceImpl implements WxUserService {
     public int updateWxUserSub(WxUser wxUser, Integer status) {
         return wxUserMapper.updateWxUserSub(wxUser, status);
     }
+
 }

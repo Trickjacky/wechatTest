@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * 获取ACCESS_TOKEN并验证存在时间是否过期
+ * 获取静态资源
  */
 public class Constant {
     //测试号使用
@@ -23,6 +23,12 @@ public class Constant {
     //存储jsapi_ticket的时间
     public static long JSAPI_TICKET_TIME;
 
+    /**
+     * 获取ACCESS_TOKEN并验证存在时间是否过期
+     * 如果过期则重新获取
+     *
+     * @return
+     */
     public static String getAccess_token() {
         //现在的时间
         long now = System.currentTimeMillis() / 1000;
@@ -37,6 +43,12 @@ public class Constant {
         return ACCESS_TOKEN;
     }
 
+    /**
+     * 获取JSAPI_TICKET并验证存在时间是否过期
+     * 如果过期则重新获取
+     *
+     * @return
+     */
     public static String getJSAPI_ticket() {
         //现在的时间
         long now = System.currentTimeMillis() / 1000;
@@ -51,18 +63,27 @@ public class Constant {
         return JSAPI_TICKET;
     }
 
-    public static Map<String, String> getConfig(String url) {
+    /**
+     * 通过config接口注入权限并验证配置
+     *
+     * @param url
+     * @return
+     */
+    public static Map<String, Object> getConfig(String url) {
 
         String jsapi_ticket = getJSAPI_ticket();
         //noncestr随机字符串
         String noncestr = UUID.randomUUID().toString().replaceAll("-", "");
+        //时间戳
         long timestamp = System.currentTimeMillis() / 1000;
+        //拼接成字符串
         String str = "jsapi_ticket=" + jsapi_ticket + "&noncestr=" + noncestr + "&timestamp=" + timestamp + "&url=" + url;
         System.out.println(str);
+        //进行sha1加密
         String signature = CheckWechatInfo.getSha1(str);
         System.out.println(signature);
         //将script中需要的数据存入map
-        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("appId", APPID);
         map.put("timestamp", String.valueOf(timestamp));
         map.put("nonceStr", noncestr);

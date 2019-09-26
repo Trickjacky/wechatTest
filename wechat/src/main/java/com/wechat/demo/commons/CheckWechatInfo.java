@@ -79,6 +79,7 @@ public class CheckWechatInfo {
 
     /**
      * sha1加密
+     *
      * @param str
      * @return
      */

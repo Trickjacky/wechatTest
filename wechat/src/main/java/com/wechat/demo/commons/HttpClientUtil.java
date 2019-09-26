@@ -13,7 +13,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 /**
- * 创建客户端公用类
+ * 创建客户端公用请求类
  */
 public class HttpClientUtil {
     //doGet请求

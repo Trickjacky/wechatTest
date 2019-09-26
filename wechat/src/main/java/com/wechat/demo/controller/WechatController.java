@@ -3,7 +3,7 @@ package com.wechat.demo.controller;
 import com.wechat.demo.commons.CheckWechatInfo;
 import com.wechat.demo.commons.Constant;
 import com.wechat.demo.commons.HttpClientUtil;
-import com.wechat.demo.commons.MessageController;
+import com.wechat.demo.commons.MessageUtil;
 import com.wechat.demo.domain.WxUser;
 import com.wechat.demo.service.WxUserService;
 import org.jdom2.Element;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -28,7 +29,7 @@ public class WechatController {
 
     String resultXml = "";
 
-    MessageController messageController = new MessageController();
+    MessageUtil messageController = new MessageUtil();
 
     /**
      * 完成项目与微信公众号的一次握手
@@ -52,11 +53,9 @@ public class WechatController {
             Element root = new SAXBuilder().build(request.getInputStream()).getRootElement();
             //接收最终xml信息
             resultXml = messageController.msgType(root, session);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return resultXml;
     }
 
@@ -72,8 +71,43 @@ public class WechatController {
     }
 
     @RequestMapping(value = "config", method = RequestMethod.POST)
-    public Map<String, String> config(String tagetUrl, HttpSession session) {
-        Map<String, String> map = Constant.getConfig(tagetUrl);
+    public Map<String, Object> config(String tagetUrl, HttpSession session) {
+        Map<String, Object> map = Constant.getConfig(tagetUrl);
+        return map;
+    }
+
+    /**
+     * 简易的二维码分享（写死数据）
+     *
+     * @param tagetUrl
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "shareDate", method = RequestMethod.POST)
+    public Map<String, Object> shareDate(String tagetUrl, HttpSession session) {
+        Map<String, Object> map = Constant.getConfig(tagetUrl);
+
+        String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + Constant.getAccess_token();
+        String data = "{\"expire_seconds\": 604800, \"action_name\": \"QR_SCENE\", \"action_info\": {\"scene\": {\"scene_id\": 1}}}";
+        JSONObject jsonObject = HttpClientUtil.doPost(url, data);
+        String ticket = jsonObject.get("ticket").toString();
+        System.out.println("ticket=" + ticket);
+
+        //分享到朋友
+        Map<String, String> appMessage = new HashMap<>();
+        appMessage.put("title", "土豪快来助我！");
+        appMessage.put("desc", "帮助好友获得土豪称谓，给他助力！");
+        appMessage.put("link", "http://kj6xnfb.hn3.mofasuidao.cn/app/sweep_code.html?ticket=" + ticket);
+        appMessage.put("imgUrl", "http://kj6xnfb.hn3.mofasuidao.cn/app/images/del-pic.jpg");
+        //分享到朋友圈
+        Map<String, String> timeline = new HashMap<String,String>();
+        timeline.put("title", "土豪快来助我！");
+        timeline.put("link", "http://kj6xnfb.hn3.mofasuidao.cn/app/sweep_code.html?ticket=" + ticket);
+        timeline.put("imgUrl", "http://kj6xnfb.hn3.mofasuidao.cn/app/images/del-pic.jpg");
+
+        map.put("appMessage", appMessage);
+        map.put("timeline", timeline);
+
         return map;
     }
 }

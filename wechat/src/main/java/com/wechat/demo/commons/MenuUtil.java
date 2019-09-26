@@ -23,6 +23,11 @@ public class MenuUtil {
         return jsonObject;
     }
 
+    /**
+     * 加载微信公众号底部自定义菜单
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         //JSONObject json = getAccess_token();
         String access_token = Constant.getAccess_token();

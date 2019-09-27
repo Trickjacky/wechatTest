@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wechat.demo.mapper.QrCodeMapper">
+    <resultMap id="BaseResultMap" type="com.wechat.demo.domain.QrCode">
+        <!--@mbg.generated generated on Thu Sep 26 19:27:19 CST 2019.-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="wx_id" jdbcType="INTEGER" property="wxId"/>
+        <result column="ticket" jdbcType="VARCHAR" property="ticket"/>
+        <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
+        <result column="expire_seconds" jdbcType="VARCHAR" property="expireSeconds"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated generated on Thu Sep 26 19:27:19 CST 2019.-->
+        id, wx_id, ticket, create_time, expire_seconds
+    </sql>
+
+    <select id="selectByWx_id" parameterType="integer" resultMap="BaseResultMap">
+        SELECT id,wx_id,ticket,create_time,expire_seconds from qr_code WHERE wx_id=#{wx_id}
+    </select>
+
+    <select id="selectById" parameterType="integer" resultMap="BaseResultMap">
+        SELECT id,wx_id,ticket,create_time,expire_seconds from qr_code WHERE id=#{qrcodeid}
+    </select>
+</mapper>

@@ -20,8 +20,19 @@
             $(".loading").fadeOut(300);
             var arr = location.href.split("&")[0].split("=");
             if (arr.length > 1) {
-                var ticket = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + arr[1];
-                $("#qrcode").attr("src", ticket);
+
+                $.ajax({
+                    type: "post",
+                    url: "http://kj6xnfb.hn3.mofasuidao.cn/wechat/getQcode.do",
+                    data: {"qrcodeid": arr[1]},
+                    async: false,
+                    dataType: "json",
+                    success: function (data) {
+                        var ticket = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + data.ticket;
+                        $("#qrcode").attr("src", ticket);
+                    }
+                })
+
             }
 
         })

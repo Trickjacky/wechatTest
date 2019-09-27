@@ -1,8 +1,12 @@
 package com.wechat.demo.commons;
 
 import com.wechat.demo.domain.Message;
+import com.wechat.demo.domain.QrCode;
+import com.wechat.demo.domain.ShareQrcode;
 import com.wechat.demo.domain.WxUser;
 import com.wechat.demo.mapper.MessageMapper;
+import com.wechat.demo.mapper.QrCodeMapper;
+import com.wechat.demo.mapper.ShareQrcodeMapper;
 import com.wechat.demo.service.WxUserService;
 import com.wechat.demo.service.impl.WxUserServiceImpl;
 import org.jdom2.CDATA;
@@ -27,6 +31,8 @@ public class MessageUtil {
      */
     WxUserService wxUserService = SpringBeanUtil.getBean(WxUserServiceImpl.class);
     MessageMapper messageMapper = SpringBeanUtil.getBean(MessageMapper.class);
+    QrCodeMapper qrCodeMapper = SpringBeanUtil.getBean(QrCodeMapper.class);
+    ShareQrcodeMapper shareQrcodeMapper = SpringBeanUtil.getBean(ShareQrcodeMapper.class);
 
     public String eventUpdate(String event, String fromUserName, String toUserName, String eventKey, String ticket) {
 
@@ -35,15 +41,6 @@ public class MessageUtil {
             System.out.println(eventKey);
             //截取场景值
             String[] split = eventKey.split("_");
-            if (split.length > 1) {
-                String scene_id = split[1];
-                /**
-                 * 如果有场景值，那么代表当前这个用户是通过扫描带有参数的二维码进来的
-                 * 与我们的分享活动有关
-                 * 需要将当前用户的信息与分享者进行绑定
-                 */
-            }
-            System.out.println(ticket);
 
             /**
              * 获取用户信息并传入数据库
@@ -56,13 +53,34 @@ public class MessageUtil {
             System.out.println("d_wx_user=" + d_wx_user);
             wxUserService.selectWxUser(d_wx_user);
             try {
-
                 //查询关注的推送消息
                 List<Message> list = messageMapper.selectMessagePush("0");
                 xml = createResultXml(list, fromUserName, toUserName, "news");
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            if (split.length > 1) {
+                String scene_id = split[1];
+                /**
+                 * 如果有场景值，那么代表当前这个用户是通过扫描带有参数的二维码进来的
+                 * 与我们的分享活动有关
+                 * 需要将当前用户的信息与分享者进行绑定
+                 */
+
+                System.out.println("scene_id=" + scene_id);
+                QrCode qrCode = qrCodeMapper.selectByWx_id(Integer.valueOf(scene_id));
+                System.out.println("qrCode.toString()=" + qrCode.toString());
+                ShareQrcode shareQrcode = new ShareQrcode();
+                //存入分享者id
+                shareQrcode.setfId(qrCode.getWxId());
+                d_wx_user = wxUserService.selectWxUserByOpenId(String.valueOf(jsonObject.get("openid")));
+                //存入扫码者id（通过分享出去的连接扫码）
+                shareQrcode.setsId(d_wx_user.getId());
+                shareQrcodeMapper.insert(shareQrcode);
+            }
+
+
         } else if (event.equals("unsubscribe")) {
             System.out.println("进入取消关注事件");
             //根据获取到的openid去查询用户基本信息

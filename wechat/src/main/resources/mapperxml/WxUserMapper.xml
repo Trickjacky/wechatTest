@@ -29,4 +29,8 @@
         UPDATE wx_user set subscribe=#{status} where openid=#{wxUser.openid}
     </update>
 
+    <select id="selectWxUserByOpenId" parameterType="string" resultMap="BaseResultMap">
+      SELECT *from wx_user where openid=#{openId}
+    </select>
+
 </mapper>

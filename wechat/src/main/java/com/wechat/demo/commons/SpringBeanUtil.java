@@ -6,6 +6,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+/**
+ * 解决普通类调用注解类方法的公共类
+ */
 @Component
 public class SpringBeanUtil implements ApplicationContextAware {
 

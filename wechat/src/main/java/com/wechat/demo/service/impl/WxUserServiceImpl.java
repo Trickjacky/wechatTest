@@ -46,4 +46,9 @@ public class WxUserServiceImpl implements WxUserService {
         return wxUserMapper.updateWxUserSub(wxUser, status);
     }
 
+    @Override
+    public WxUser selectWxUserByOpenId(String openId) {
+        return wxUserMapper.selectWxUserByOpenId(openId);
+    }
+
 }

@@ -5,4 +5,6 @@ import org.apache.ibatis.annotations.Param;import tk.mybatis.mapper.common.Mappe
 
 public interface WxUserMapper extends Mapper<WxUser> {
     int updateWxUserSub(@Param(value = "wxUser") WxUser wxUser, @Param(value = "status") Integer status);
+
+    WxUser selectWxUserByOpenId(String openId);
 }

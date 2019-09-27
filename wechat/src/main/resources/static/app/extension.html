@@ -22,16 +22,6 @@
             var arr = location.href.split("&")[0].split("=");
             if (arr.length > 1) {
                 var code = arr[1];
-                $.ajax({
-                    type: "post",
-                    url: "http://kj6xnfb.hn3.mofasuidao.cn/wechat/code.do",
-                    data: {"code": code},
-                    async: false,
-                    dataType: "json",
-                    success: function (data) {
-
-                    }
-                })
 
                 $.ajax({
                     type: "post",
@@ -72,11 +62,9 @@
                                 }
                             })
                         });
-
                     }
                 })
             }
-
 
         })
     </script>

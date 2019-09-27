@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
+//该系统存入数据库未去重（待修改）
 @RestController
 public class WechatController {
 
@@ -49,11 +50,11 @@ public class WechatController {
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST)
-    public String indexPost(HttpServletRequest request, HttpSession session) {
+    public String indexPost(HttpServletRequest request) {
         try {
             Element root = new SAXBuilder().build(request.getInputStream()).getRootElement();
             //接收最终xml信息
-            resultXml = messageController.msgType(root, session);
+            resultXml = messageController.msgType(root);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -69,6 +70,7 @@ public class WechatController {
     @RequestMapping(value = "code", method = RequestMethod.POST)
     public String code(String code, HttpSession session) {
 
+        System.out.println("获取code信息=" + code);
         //通过code换取access_token
         String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + Constant.APPID + "&secret=" + Constant.APPSECRET + "&code=" + code + "&grant_type=authorization_code";
         //可以拿到access_token和openid
@@ -83,6 +85,7 @@ public class WechatController {
             wxUserService.insertWxUser(wxUser);
         }
         session.setAttribute("wx_user", wxUserService.selectWxUserByOpenId(jsonObject.get("openid").toString()));
+        System.out.println("codesession=" + wxUserService.selectWxUserByOpenId(jsonObject.get("openid").toString()));
         return "";
 
     }
@@ -99,6 +102,7 @@ public class WechatController {
 
         //获取对象
         WxUser wx_user = (WxUser) session.getAttribute("wx_user");
+        System.out.println("wx_user" + wx_user);
         //获取最新的二维码
         QrCode qrCode = qrCodeService.updateQRcode(wx_user.getId());
 
@@ -123,6 +127,7 @@ public class WechatController {
 
     /**
      * 获取二维码
+     *
      * @param qrcodeid
      * @return
      */

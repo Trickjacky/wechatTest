@@ -3,6 +3,9 @@ package com.wechat.demo.commons;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 /**
  * 获取access_token，用于调用接口
  */
@@ -40,19 +43,29 @@ public class MenuUtil {
         JSONObject menua = new JSONObject();
         menua.put("name", "首页");
         menua.put("type", "view");
-        menua.put("url", "http://kj6xnfb.hn3.mofasuidao.cn/app/index.html");
-
+        try {
+            menua.put("url", "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + Constant.APPID + "&redirect_uri=" + URLEncoder.encode("http://kj6xnfb.hn3.mofasuidao.cn/app/index.html", "utf-8") + "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         //第二个一级菜单
         JSONObject menub = new JSONObject();
         menub.put("name", "My car");
         menub.put("type", "view");
-        menub.put("url", "http://kj6xnfb.hn3.mofasuidao.cn/app/shopcar.html");
-
+        try {
+            menua.put("url", "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + Constant.APPID + "&redirect_uri=" + URLEncoder.encode("http://kj6xnfb.hn3.mofasuidao.cn/app/shopcar.html", "utf-8") + "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         //第三个一级菜单
         JSONObject menuc = new JSONObject();
         menuc.put("name", "个人中心");
         menuc.put("type", "view");
-        menuc.put("url", "http://kj6xnfb.hn3.mofasuidao.cn/app/pcenter.html");
+        try {
+            menua.put("url", "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + Constant.APPID + "&redirect_uri=" + URLEncoder.encode("http://kj6xnfb.hn3.mofasuidao.cn/app/pcenter.html", "utf-8") + "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         //将3个一级菜单放入一级菜单组
         button.put(menua);

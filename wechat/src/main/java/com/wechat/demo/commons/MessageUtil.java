@@ -15,7 +15,7 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpSession;
+
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -93,7 +93,7 @@ public class MessageUtil {
         return xml;
     }
 
-    public String msgType(Element root, HttpSession session) {
+    public String msgType(Element root) {
 
         //开发者微信号
         String toUserName = root.getChildText("ToUserName");
@@ -142,7 +142,7 @@ public class MessageUtil {
             //进入小视频消息
             System.out.println("进入小视频消息");
         }
-        session.setAttribute("wx_user", d_wx_user);
+
         return xml;
     }
 
